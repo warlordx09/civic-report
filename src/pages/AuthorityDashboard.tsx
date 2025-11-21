@@ -62,7 +62,7 @@ export default function AuthorityDashboard() {
 
  const fetchAllIssues = async () => {
   try {
-    const response = await fetch('http://localhost:5000/api/issues/');
+    const response = await fetch('http://ec2-3-109-208-236.ap-south-1.compute.amazonaws.com:5000/api/issues/');
     console.log('Sending request...');
 
     if (response.ok) {
@@ -98,7 +98,7 @@ useEffect(() => {
 const fetchAuthorityIssues = async () => {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:5000/api/issues/authority', {
+    const response = await fetch('http://ec2-3-109-208-236.ap-south-1.compute.amazonaws.com:5000/api/issues/authority', {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -133,7 +133,7 @@ const fetchAuthorityIssues = async () => {
 
 const updateIssueStatus = async (issueId: string, newStatus: string) => {
   const token = localStorage.getItem("token");
-  const res = await fetch(`http://localhost:5000/api/issues/${issueId}/status`, {
+  const res = await fetch(`http://ec2-3-109-208-236.ap-south-1.compute.amazonaws.com:5000/api/issues/${issueId}/status`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -157,7 +157,7 @@ useEffect(() => {
           return;
         }
         console.log("ran going -------------")
-        const res = await fetch("http://localhost:5000/api/issues/me", {
+        const res = await fetch("http://ec2-3-109-208-236.ap-south-1.compute.amazonaws.com:5000/api/issues/me", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -182,7 +182,7 @@ useEffect(() => {
   }, []);
 const fetchMyIssues = async () => {
   try {
-    const response = await fetch('http://localhost:5000/api/issues/user', {
+    const response = await fetch('http://ec2-3-109-208-236.ap-south-1.compute.amazonaws.com:5000/api/issues/user', {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
@@ -361,7 +361,7 @@ const fetchMyIssues = async () => {
                 if (location.address) formDataToSend.append('address', location.address);
             }
 
-            const response = await fetch('http://localhost:5000/api/issues', {
+            const response = await fetch('http://ec2-3-109-208-236.ap-south-1.compute.amazonaws.com:5000/api/issues', {
                 method: 'POST',
                 headers: {
 

@@ -32,7 +32,7 @@ const [authorities, setAuthorities] = useState<{ id: number; name: string }[]>([
 
 useEffect(() => {
     // Fetch authorities from backend
-    fetch("http://localhost:5000/authorities")
+    fetch("http://ec2-3-109-208-236.ap-south-1.compute.amazonaws.com:5000/authorities")
         .then(res => res.json())
         .then(data => setAuthorities(data))
         .catch(err => console.error(err));
@@ -92,7 +92,7 @@ useEffect(() => {
         setIsSubmitting(true);
 
         try {
-            const response = await fetch('http://localhost:5000/api/auth/signup', {
+            const response = await fetch('http://ec2-3-109-208-236.ap-south-1.compute.amazonaws.com:5000/api/auth/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

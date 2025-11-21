@@ -54,7 +54,7 @@ export default function Dashboard() {
         if (!window.confirm('Are you sure you want to delete this issue?')) return;
 
         try {
-            const response = await fetch(`http://localhost:5000/api/issues/${id}`, {
+            const response = await fetch(`http://ec2-3-109-208-236.ap-south-1.compute.amazonaws.com:5000/api/issues/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -78,7 +78,7 @@ export default function Dashboard() {
 
  const fetchAllIssues = async () => {
   try {
-    const response = await fetch('http://localhost:5000/api/issues/');
+    const response = await fetch('http://ec2-3-109-208-236.ap-south-1.compute.amazonaws.com:5000/api/issues/');
     console.log('Sending request...');
 
     if (response.ok) {
@@ -119,7 +119,7 @@ const handleClassify = async () => {
         const dataToSend = new FormData();
         dataToSend.append("image", formData.image);
 
-        const response = await fetch("http://localhost:5000/api/issues/classify", {
+        const response = await fetch("http://ec2-3-109-208-236.ap-south-1.compute.amazonaws.com:5000/api/issues/classify", {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`,
@@ -150,7 +150,7 @@ const handleClassify = async () => {
 
 const fetchMyIssues = async () => {
   try {
-    const response = await fetch('http://localhost:5000/api/issues/user', {
+    const response = await fetch('http://ec2-3-109-208-236.ap-south-1.compute.amazonaws.com:5000/api/issues/user', {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
@@ -330,7 +330,7 @@ const fetchMyIssues = async () => {
                 if (location.address) formDataToSend.append('address', location.address);
             }
 
-            const response = await fetch('http://localhost:5000/api/issues', {
+            const response = await fetch('http://ec2-3-109-208-236.ap-south-1.compute.amazonaws.com:5000/api/issues', {
                 method: 'POST',
                 headers: {
 
