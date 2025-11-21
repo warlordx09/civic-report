@@ -7,8 +7,8 @@ interface FormData {
     phone: string;
     password: string;
     confirmPassword: string;
-    role?: "user" | "authority" | "admin";   // new
-    authorityId?: number;                    // optional: only for authority
+    role?: "user" | "authority" | "admin";
+    authorityId?: number;
 }
 interface FormErrors {
     name?: string;
@@ -26,12 +26,12 @@ export default function SignupPage() {
     phone: '',
     password: '',
     confirmPassword: '',
-    role: "user",  // default
+    role: "user",
 });
 const [authorities, setAuthorities] = useState<{ id: number; name: string }[]>([]);
 
 useEffect(() => {
-    // Fetch authorities from backend
+
     fetch("http://ec2-3-109-208-236.ap-south-1.compute.amazonaws.com:5000/authorities")
         .then(res => res.json())
         .then(data => setAuthorities(data))
@@ -46,7 +46,7 @@ useEffect(() => {
   const { name, value } = e.target;
   setFormData(prev => ({
     ...prev,
-    [name]: name === "authorityId" ? Number(value) : value, // cast authorityId to number
+    [name]: name === "authorityId" ? Number(value) : value,
   }));
   if (formErrors[name as keyof FormErrors]) {
     setFormErrors(prev => ({ ...prev, [name]: "" }));
