@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { AlertCircle, Home, FileText, PlusCircle, MapPin, Camera, Upload, X, Calendar, Clock, Filter, ChevronDown } from 'lucide-react';
-import * as exifr from "exifr";
+import { AlertCircle, Home, FileText, PlusCircle, MapPin, Camera,  X, Calendar, Clock, ChevronDown } from 'lucide-react';
+
 import { useNavigate } from 'react-router-dom';
 import IssueMap from '../components/IssueMap';
 
@@ -98,7 +98,7 @@ export default function Dashboard() {
         status: issue.status.toLowerCase() as 'pending' | 'in-progress' | 'resolved',
         createdAt: issue.createdAt,
         userId: issue.userId.toString(),
-      })).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      })).sort((a:any, b:any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
       setAllIssues(issues);
     } else {
@@ -269,8 +269,8 @@ const fetchMyIssues = async () => {
             const imageData = reader.result as string;
 
             try {
-                const exifData = await exifr.parse(file);
-                const dateTaken = exifData?.DateTimeOriginal;
+                // const exifData = await exifr.parse(file);
+                // const dateTaken = exifData?.DateTimeOriginal;
 
                 // if (dateTaken) {
                 //     const now = new Date();

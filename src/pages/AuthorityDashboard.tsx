@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { AlertCircle, Home, FileText, PlusCircle, MapPin, Camera, Upload, X, Calendar, Clock, Filter, ChevronDown } from 'lucide-react';
-import * as exifr from "exifr";
+import  { useState, useEffect } from 'react';
+import { AlertCircle, Home, FileText,  MapPin, Calendar, Clock,  ChevronDown } from 'lucide-react';
+
 import { useNavigate } from 'react-router-dom';
 import IssueMap from '../components/IssueMap';
 
@@ -35,6 +35,7 @@ interface AuthorityInfo {
 export default function AuthorityDashboard() {
     const navigate = useNavigate()
     const [activeTab, setActiveTab] = useState<'dashboard' | 'report' | 'my-issues'>('report');
+    // @ts-ignore
     const [formData, setFormData] = useState<FormData>({
         title: '',
         description: '',
@@ -42,14 +43,21 @@ export default function AuthorityDashboard() {
         imagePreview: '',
         issueType:''
     });
+      // @ts-ignore
     const [location, setLocation] = useState<{ latitude: number; longitude: number; address?: string } | null>(null);
+    // @ts-ignore
     const [isLoadingLocation, setIsLoadingLocation] = useState(false);
+      // @ts-ignore
     const [formErrors, setFormErrors] = useState<any>({});
+      // @ts-ignore
     const [isSubmitting, setIsSubmitting] = useState(false);
+      // @ts-ignore
     const [allIssues, setAllIssues] = useState<Issue[]>([]);
+      // @ts-ignore
     const [myIssues, setMyIssues] = useState<Issue[]>([]);
       const [authority, setAuthority] = useState<AuthorityInfo | null>(null);
   const [loading, setLoading] = useState(true);
+  // @ts-ignore
   const [error, setError] = useState<string | null>(null);
     const [filterStatus, setFilterStatus] = useState<string>('all');
 
@@ -82,7 +90,7 @@ export default function AuthorityDashboard() {
         status: issue.status.toLowerCase() as 'pending' | 'in-progress' | 'resolved',
         createdAt: issue.createdAt,
         userId: issue.userId.toString(),
-      })).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      })).sort((a:any, b:any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
       setAllIssues(issues);
     } else {
@@ -291,113 +299,72 @@ const fetchMyIssues = async () => {
         }
     };
 
-    const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onloadend = async () => {
-            const imageData = reader.result as string;
-
-            try {
-                const exifData = await exifr.parse(file);
-                const dateTaken = exifData?.DateTimeOriginal;
-
-                // if (dateTaken) {
-                //     const now = new Date();
-                //     const diffHours = Math.abs(now.getTime() - dateTaken.getTime()) / 36e5;
-                //     if (diffHours > 24) {
-                //         alert("⚠️ This photo seems older than 24 hours.");
-                //         return;
-                //     }
-                // } else {
-                //     alert("⚠️ Could not verify photo date. Please use your camera to take a new photo.");
-                //     return;
-                // }
-
-                setFormData(prev => ({ ...prev, image: file, imagePreview: imageData }));
-            } catch (err) {
-                console.error("Error reading EXIF:", err);
-                alert("Could not read photo metadata. Try using a recent photo.");
-            }
-        };
-
-        reader.readAsDataURL(file);
-    };
-    const removeImage = () => {
-        setFormData(prev => ({ ...prev, image: null, imagePreview: '' }));
-    };
-
-    const validateForm = () => {
-        const errors: any = {};
-        if (!formData.title.trim()) errors.title = 'Title is required';
-        if (!formData.description.trim()) errors.description = 'Description is required';
-        if (!formData.image) errors.image = 'Image is required';
-        if (!location) errors.location = 'Location is required';
-        return errors;
-    };
-
-    const handleSubmit = async () => {
-        const errors = validateForm();
-        if (Object.keys(errors).length > 0) {
-            setFormErrors(errors);
-            return;
-        }
-
-        setIsSubmitting(true);
-
-        try {
-            const formDataToSend = new FormData();
-            formDataToSend.append('title', formData.title);
-            formDataToSend.append('description', formData.description);
 
 
 
-            if (formData.image) formDataToSend.append('image', formData.image);
 
-            if (location) {
-                formDataToSend.append('latitude', location.latitude.toString());
-                formDataToSend.append('longitude', location.longitude.toString());
-                if (location.address) formDataToSend.append('address', location.address);
-            }
 
-            const response = await fetch('http://ec2-3-109-208-236.ap-south-1.compute.amazonaws.com:5000/api/issues', {
-                method: 'POST',
-                headers: {
+//     const handleSubmit = async () => {
+//         const errors = validateForm();
+//         if (Object.keys(errors).length > 0) {
+//             setFormErrors(errors);
+//             return;
+//         }
 
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                },
-                body: formDataToSend
-            });
+//         setIsSubmitting(true);
 
-            const data = await response.json();
+//         try {
+//             const formDataToSend = new FormData();
+//             formDataToSend.append('title', formData.title);
+//             formDataToSend.append('description', formData.description);
 
-            if (response.ok) {
-                alert('✅ Issue reported successfully!');
-                console.log('Created issue:', data.issue);
 
-                setFormData({
-                    title: '',
-                    description: '',
-                    image: null,
-                    imagePreview: '',
-                    issueType:''
-,                })
-                setLocation(null);
-                setFormErrors({});
-                fetchAllIssues();
-                fetchMyIssues();
-                setActiveTab('dashboard');
-            } else {
-                alert(data.error || data.message || 'Failed to report issue');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Failed to connect to server');
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+
+//             if (formData.image) formDataToSend.append('image', formData.image);
+
+//             if (location) {
+//                 formDataToSend.append('latitude', location.latitude.toString());
+//                 formDataToSend.append('longitude', location.longitude.toString());
+//                 if (location.address) formDataToSend.append('address', location.address);
+//             }
+
+//             const response = await fetch('http://ec2-3-109-208-236.ap-south-1.compute.amazonaws.com:5000/api/issues', {
+//                 method: 'POST',
+//                 headers: {
+
+//                     'Authorization': `Bearer ${localStorage.getItem('token')}`
+//                 },
+//                 body: formDataToSend
+//             });
+
+//             const data = await response.json();
+
+//             if (response.ok) {
+//                 alert('✅ Issue reported successfully!');
+//                 console.log('Created issue:', data.issue);
+
+//                 setFormData({
+//                     title: '',
+//                     description: '',
+//                     image: null,
+//                     imagePreview: '',
+//                     issueType:''
+// ,                })
+//                 setLocation(null);
+//                 setFormErrors({});
+//                 fetchAllIssues();
+//                 fetchMyIssues();
+//                 setActiveTab('dashboard');
+//             } else {
+//                 alert(data.error || data.message || 'Failed to report issue');
+//             }
+//         } catch (error) {
+//             console.error('Error:', error);
+//             alert('Failed to connect to server');
+//         } finally {
+//             setIsSubmitting(false);
+//         }
+//     };
 
     const getStatusColor = (status: string) => {
         switch (status) {
@@ -429,9 +396,7 @@ const fetchMyIssues = async () => {
         ? allIssues
         : allIssues.filter(issue => issue.status === filterStatus);
 
-    const filteredMyIssues = filterStatus === 'all'
-        ? myIssues
-        : myIssues.filter(issue => issue.status === filterStatus);
+
 
     return (
         <div className="min-h-screen bg-gray-50 flex font-inter">
